@@ -6,10 +6,12 @@ import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -57,10 +59,13 @@ class NetoAccessibilityService : AccessibilityService() {
                 tts?.setSpeechRate(0.85f) // um pouco mais devagar, pra ficar claro
                 tts?.setOnUtteranceProgressListener(ouvinteDaFala)
                 ttsPronto = true
+            } else {
+                Log.w(TAG, "A voz (TTS) não iniciou. Status: $status")
             }
         }
 
         mostrarBolinha()
+        Log.i(TAG, "Serviço ligado. Bolinha na tela.")
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
@@ -158,6 +163,7 @@ class NetoAccessibilityService : AccessibilityService() {
 
         val itens = lerItensDaTela()
         itensFalados = itens
+        Log.i(TAG, "Encontrei ${itens.size} opções: " + itens.take(5).joinToString { "${it.rotulo} ${it.area.toShortString()}" })
 
         if (itens.isEmpty()) {
             falar("Não consegui ver nenhum botão nesta tela.", "fim")
@@ -270,13 +276,50 @@ class NetoAccessibilityService : AccessibilityService() {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             PixelFormat.TRANSLUCENT
         ).apply {
-            gravity = Gravity.TOP or Gravity.START
+            // LEFT (e não START): as coordenadas da tela são sempre a partir da esquerda.
+            gravity = Gravity.TOP or Gravity.LEFT
             x = area.left - margem
             y = area.top - margem
+            // Deixa o destaque usar a tela inteira, inclusive a área do notch
+            // e por baixo da barra de status. Sem isso, o Android empurra a
+            // janela para baixo e o destaque fica fora do lugar.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                layoutInDisplayCutoutMode =
+                    WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                setFitInsetsTypes(0)
+                setFitInsetsSides(0)
+                layoutInDisplayCutoutMode =
+                    WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+            }
         }
 
         windowManager.addView(view, params)
         destaque = view
+
+        // Conferência final: depois que o destaque aparece, medimos onde ele
+        // ficou de verdade. Se algum aparelho deslocou a janela (barra de
+        // status, notch, modo de tela dividida), corrigimos a diferença.
+        view.post { corrigirPosicao(view, params, area.left - margem, area.top - margem) }
+    }
+
+    private fun corrigirPosicao(
+        view: View,
+        params: WindowManager.LayoutParams,
+        xEsperado: Int,
+        yEsperado: Int
+    ) {
+        if (destaque !== view || !view.isAttachedToWindow) return
+        val ondeFicou = IntArray(2)
+        view.getLocationOnScreen(ondeFicou)
+        val dx = xEsperado - ondeFicou[0]
+        val dy = yEsperado - ondeFicou[1]
+        if (dx == 0 && dy == 0) return
+        Log.d(TAG, "Destaque deslocado em ($dx, $dy) px. Corrigindo.")
+        params.x += dx
+        params.y += dy
+        windowManager.updateViewLayout(view, params)
     }
 
     private fun removerDestaque() {
@@ -288,4 +331,8 @@ class NetoAccessibilityService : AccessibilityService() {
 
     private fun dp(valor: Int): Int =
         (valor * resources.displayMetrics.density).toInt()
+
+    companion object {
+        private const val TAG = "NetoVirtual"
+    }
 }
