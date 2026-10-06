@@ -33,6 +33,12 @@ Ela tem o plano de etapas, a arquitetura e as regras do produto.
 - Destaque amarelo: a janela ignora barra de status e notch
   (`setFitInsetsTypes(0)` + `LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS`) e, depois de
   aparecer, mede a própria posição e corrige qualquer diferença.
+- Telas: apresentação em 3 páginas (`ApresentacaoActivity`), início
+  (`MainActivity`) e ajustes (`AjustesActivity`: velocidade da voz e tamanho
+  da bolinha, salvos em `Preferencias`). Visual em `res/values/themes.xml`.
+- Prints automáticos: `.github/workflows/prints.yml` roda `scripts/tirar-prints.sh`
+  num emulador e salva em `docs/prints/`. No APK de debug dá para abrir telas e
+  "tocar" na bolinha pelo adb (ver comentários em `MainActivity` e no serviço).
 - `local.properties` é de cada máquina (fica fora do git): `sdk.dir=<caminho do SDK>`.
 - A skill `neto-virtual` ainda não está no repositório
   (`.claude/skills/neto-virtual/SKILL.md` não existe).
