@@ -153,8 +153,11 @@ class NetoAccessibilityService : AccessibilityService() {
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
-            x = if (bolinhaX >= 0) bolinhaX else dp(16)
-            y = if (bolinhaY >= 0) bolinhaY else dp(300)
+            // Começa no canto direito, mais para baixo: perto do polegar
+            // e longe dos títulos das telas.
+            val tela = resources.displayMetrics
+            x = if (bolinhaX >= 0) bolinhaX else tela.widthPixels - tamanho - dp(12)
+            y = if (bolinhaY >= 0) bolinhaY else (tela.heightPixels * 0.62).toInt()
         }
 
         // Arrastar para mudar de lugar, ou tocar para pedir ajuda.

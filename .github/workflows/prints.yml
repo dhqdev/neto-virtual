@@ -41,7 +41,7 @@ jobs:
       - name: Guardar os prints no repositório (docs/prints)
         run: |
           mkdir -p docs/prints
-          cp prints/*.png docs/prints/
+          cp prints/*.png prints/*.txt docs/prints/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/prints

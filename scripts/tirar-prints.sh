@@ -65,5 +65,5 @@ print 08-bolinha-em-outro-app 4
 adb shell am broadcast -a "$APP.PEDIR_AJUDA" -p "$APP" >/dev/null
 for i in 1 2 3 4 5 6; do print "09-destaque-$i" 2; done
 
-adb logcat -d -s NetoVirtual > "$OUT/logcat.txt"
+adb logcat -d -s NetoVirtual TextToSpeech AndroidRuntime > "$OUT/logcat.txt"
 ls -la "$OUT"

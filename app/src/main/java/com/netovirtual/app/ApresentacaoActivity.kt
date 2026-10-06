@@ -49,13 +49,13 @@ class ApresentacaoActivity : Activity() {
         Telas.adicionarPasso(passosAtivar, 3, "Ligue a chave e toque em \"Permitir\"")
         Telas.adicionarPasso(passosAtivar, 4, "Volte para cá com o botão de voltar", "↩️")
 
+        // Pontinhos que mostram em qual página estamos. O tamanho precisa ser
+        // fixo: uma View "vazia" com WRAP_CONTENT ocupa todo o espaço livre.
         repeat(paginas.size) {
             pontos.addView(View(this).apply {
                 setBackgroundResource(R.drawable.bg_ponto)
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { marginStart = 6.dp; marginEnd = 6.dp }
+                layoutParams = LinearLayout.LayoutParams(12.dp, 12.dp)
+                    .apply { marginStart = 6.dp; marginEnd = 6.dp }
             })
         }
 
@@ -84,7 +84,11 @@ class ApresentacaoActivity : Activity() {
     private fun mostrar(nova: Int) {
         pagina = nova.coerceIn(0, paginas.lastIndex)
         paginas.forEachIndexed { i, v -> v.visibility = if (i == pagina) View.VISIBLE else View.GONE }
-        for (i in 0 until pontos.childCount) pontos.getChildAt(i).isSelected = i == pagina
+        for (i in 0 until pontos.childCount) {
+            val ponto = pontos.getChildAt(i)
+            ponto.isSelected = i == pagina
+            ponto.layoutParams = ponto.layoutParams.apply { width = if (i == pagina) 28.dp else 12.dp }
+        }
         botaoSecundario.visibility = if (pagina > 0) View.VISIBLE else View.GONE
 
         botaoPrincipal.text = when (pagina) {
