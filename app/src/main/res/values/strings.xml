@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Neto Virtual</string>
+    <string name="accessibility_description">O Neto Virtual lê o que aparece na tela para explicar, por voz, onde a pessoa deve tocar. Ele nunca toca em nada sozinho.</string>
+</resources>
