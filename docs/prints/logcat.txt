@@ -1,7 +1,8 @@
 --------- beginning of main
-10-06 14:12:08.360  6531  6531 I TextToSpeech: Sucessfully bound to com.google.android.tts
-10-06 14:12:08.378  6531  6531 I NetoVirtual: Serviço ligado. Bolinha na tela.
-10-06 14:12:08.403  6531  6592 I TextToSpeech: Connected to TTS engine
-10-06 14:12:08.453  6531  7261 I TextToSpeech: Setting up the connection to TTS engine...
-10-06 14:12:08.909  6531  6531 I NetoVirtual: Voz pronta. Português do Brasil: sim
-10-06 14:12:32.125  6531  6531 I NetoVirtual: Encontrei 9 opções: Foto do perfil. Toque duas vezes para abrir a Conta do Google [891,283][1017,409], Pesquisar nas Configurações [42,599][1038,736], Rede e Internet [0,778][1080,1009], Dispositivos conectados [0,1009][1080,1240], Apps [0,1240][1080,1471]
+10-06 14:18:59.576  4699  6222 I TextToSpeech: Disconnected from TTS engine
+10-06 14:19:19.236  6200  6200 I TextToSpeech: Sucessfully bound to com.google.android.tts
+10-06 14:19:19.295  6200  6200 I NetoVirtual: Serviço ligado. Bolinha na tela.
+10-06 14:19:19.387  6200  6232 I TextToSpeech: Connected to TTS engine
+10-06 14:19:19.561  6200  7378 I TextToSpeech: Setting up the connection to TTS engine...
+10-06 14:19:20.446  6200  6200 I NetoVirtual: Voz pronta. Português do Brasil: sim
+10-06 14:19:43.396  6200  6200 I NetoVirtual: Encontrei 9 opções: Foto do perfil. Toque duas vezes para abrir a Conta do Google [891,283][1017,409], Pesquisar nas Configurações [42,599][1038,736], Rede e Internet [0,778][1080,1009], Dispositivos conectados [0,1009][1080,1240], Apps [0,1240][1080,1471]
