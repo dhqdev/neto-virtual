@@ -68,7 +68,9 @@ class NetoAccessibilityService : AccessibilityService() {
 
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                tts?.language = Locale("pt", "BR")
+                val idioma = tts?.setLanguage(Locale("pt", "BR"))
+                Log.i(TAG, "Voz pronta. Português do Brasil: " +
+                    if (idioma != null && idioma >= TextToSpeech.LANG_AVAILABLE) "sim" else "não instalado ($idioma)")
                 tts?.setSpeechRate(Preferencias.velocidade(this).valor)
                 tts?.setOnUtteranceProgressListener(ouvinteDaFala)
                 ttsPronto = true
@@ -228,7 +230,20 @@ class NetoAccessibilityService : AccessibilityService() {
         falar("Nesta tela eu vejo ${itens.size} opções. Vou te mostrar algumas.", "intro")
         mostrar.forEachIndexed { i, item -> falar(item.rotulo, "item_$i") }
         falar("Toque em mim de novo quando precisar.", "fim")
+
+        // Se a voz não começar logo (ex.: voz em português ainda sendo baixada),
+        // mostramos os botões mesmo assim, para a pessoa não ficar sem resposta.
+        falaComecou = false
+        main.postDelayed({
+            if (!falaComecou) {
+                Log.w(TAG, "A voz não começou. Mostrando só o destaque.")
+                tts?.stop()
+                mostrarSemVoz(mostrar)
+            }
+        }, 4000)
     }
+
+    @Volatile private var falaComecou = false
 
     private var mostrandoSemVoz = false
 
@@ -298,6 +313,7 @@ class NetoAccessibilityService : AccessibilityService() {
     /** Quando a voz começa a falar um item, o círculo vai para ele. */
     private val ouvinteDaFala = object : UtteranceProgressListener() {
         override fun onStart(utteranceId: String?) {
+            falaComecou = true
             val id = utteranceId ?: return
             main.post {
                 if (id.startsWith("item_")) {
@@ -315,6 +331,7 @@ class NetoAccessibilityService : AccessibilityService() {
 
         @Deprecated("Deprecated in Java")
         override fun onError(utteranceId: String?) {
+            Log.w(TAG, "Erro na voz ao falar: $utteranceId")
             main.post { removerDestaque() }
         }
     }
