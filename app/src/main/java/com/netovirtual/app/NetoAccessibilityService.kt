@@ -1,7 +1,15 @@
 package com.netovirtual.app
 
 import android.accessibilityservice.AccessibilityService
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
+import android.content.pm.ApplicationInfo
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.Rect
@@ -42,6 +50,11 @@ class NetoAccessibilityService : AccessibilityService() {
 
     private var bolinha: View? = null
     private var destaque: View? = null
+    private var piscar: ObjectAnimator? = null
+
+    // Onde a bolinha estava (para não pular de lugar quando muda de tamanho).
+    private var bolinhaX = -1
+    private var bolinhaY = -1
 
     private var tts: TextToSpeech? = null
     private var ttsPronto = false
@@ -56,7 +69,7 @@ class NetoAccessibilityService : AccessibilityService() {
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 tts?.language = Locale("pt", "BR")
-                tts?.setSpeechRate(0.85f) // um pouco mais devagar, pra ficar claro
+                tts?.setSpeechRate(Preferencias.velocidade(this).valor)
                 tts?.setOnUtteranceProgressListener(ouvinteDaFala)
                 ttsPronto = true
             } else {
@@ -65,7 +78,39 @@ class NetoAccessibilityService : AccessibilityService() {
         }
 
         mostrarBolinha()
+        Preferencias.abrir(this).registerOnSharedPreferenceChangeListener(ouvinteAjustes)
+        registrarAtalhoDeTeste()
         Log.i(TAG, "Serviço ligado. Bolinha na tela.")
+    }
+
+    /** Quando a pessoa muda algo em Ajustes, a bolinha se atualiza na hora. */
+    private val ouvinteAjustes = SharedPreferences.OnSharedPreferenceChangeListener { _, chave ->
+        if (chave == Preferencias.CHAVE_BOLINHA_GRANDE) {
+            bolinha?.let { try { windowManager.removeView(it) } catch (_: Exception) {} }
+            bolinha = null
+            mostrarBolinha()
+        }
+    }
+
+    /**
+     * Só no APK de teste (debug): permite "tocar na bolinha" por um comando,
+     * sem precisar do dedo. Útil para testes automáticos e prints:
+     *   adb shell am broadcast -a com.netovirtual.app.PEDIR_AJUDA -p com.netovirtual.app
+     */
+    private var atalhoDeTeste: BroadcastReceiver? = null
+
+    private fun registrarAtalhoDeTeste() {
+        if (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE == 0) return
+        val receptor = object : BroadcastReceiver() {
+            override fun onReceive(c: Context?, i: Intent?) { aoTocarNaBolinha() }
+        }
+        val filtro = IntentFilter(ACAO_PEDIR_AJUDA)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(receptor, filtro, Context.RECEIVER_EXPORTED)
+        } else {
+            registerReceiver(receptor, filtro)
+        }
+        atalhoDeTeste = receptor
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
@@ -79,6 +124,8 @@ class NetoAccessibilityService : AccessibilityService() {
 
     override fun onDestroy() {
         tts?.shutdown()
+        Preferencias.abrir(this).unregisterOnSharedPreferenceChangeListener(ouvinteAjustes)
+        atalhoDeTeste?.let { unregisterReceiver(it) }
         bolinha?.let { windowManager.removeView(it) }
         removerDestaque()
         super.onDestroy()
@@ -88,17 +135,14 @@ class NetoAccessibilityService : AccessibilityService() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun mostrarBolinha() {
-        val tamanho = dp(72)
+        val grande = Preferencias.bolinhaGrande(this)
+        val tamanho = dp(if (grande) 92 else 72)
 
         val view = TextView(this).apply {
             text = "🙂"
-            textSize = 32f
+            textSize = if (grande) 42f else 32f
             gravity = Gravity.CENTER
-            background = GradientDrawable().apply {
-                shape = GradientDrawable.OVAL
-                setColor(Color.parseColor("#2E7D32"))
-                setStroke(dp(4), Color.WHITE)
-            }
+            background = getDrawable(R.drawable.bg_bolinha)
             contentDescription = "Neto Virtual. Toque para pedir ajuda."
         }
 
@@ -109,8 +153,8 @@ class NetoAccessibilityService : AccessibilityService() {
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
-            x = dp(16)
-            y = dp(300)
+            x = if (bolinhaX >= 0) bolinhaX else dp(16)
+            y = if (bolinhaY >= 0) bolinhaY else dp(300)
         }
 
         // Arrastar para mudar de lugar, ou tocar para pedir ajuda.
@@ -135,6 +179,8 @@ class NetoAccessibilityService : AccessibilityService() {
                     if (arrastou) {
                         params.x = inicioX + dx
                         params.y = inicioY + dy
+                        bolinhaX = params.x
+                        bolinhaY = params.y
                         windowManager.updateViewLayout(v, params)
                     }
                     true
@@ -152,12 +198,9 @@ class NetoAccessibilityService : AccessibilityService() {
     }
 
     private fun aoTocarNaBolinha() {
-        if (!ttsPronto) return
-
-        // Se estiver falando, um toque faz parar.
-        if (tts?.isSpeaking == true) {
-            tts?.stop()
-            removerDestaque()
+        // Se já estiver mostrando algo, um toque faz parar.
+        if (tts?.isSpeaking == true || mostrandoSemVoz) {
+            pararTudo()
             return
         }
 
@@ -165,15 +208,41 @@ class NetoAccessibilityService : AccessibilityService() {
         itensFalados = itens
         Log.i(TAG, "Encontrei ${itens.size} opções: " + itens.take(5).joinToString { "${it.rotulo} ${it.area.toShortString()}" })
 
+        if (!ttsPronto) {
+            // Sem voz no aparelho: pelo menos mostramos os botões, um de cada vez.
+            Log.w(TAG, "Voz indisponível. Mostrando só o destaque.")
+            mostrarSemVoz(itens.take(5))
+            return
+        }
+
         if (itens.isEmpty()) {
             falar("Não consegui ver nenhum botão nesta tela.", "fim")
             return
         }
 
+        tts?.setSpeechRate(Preferencias.velocidade(this).valor)
         val mostrar = itens.take(5)
         falar("Nesta tela eu vejo ${itens.size} opções. Vou te mostrar algumas.", "intro")
         mostrar.forEachIndexed { i, item -> falar(item.rotulo, "item_$i") }
         falar("Toque em mim de novo quando precisar.", "fim")
+    }
+
+    private var mostrandoSemVoz = false
+
+    private fun mostrarSemVoz(itens: List<ItemTela>) {
+        if (itens.isEmpty()) return
+        mostrandoSemVoz = true
+        itens.forEachIndexed { i, item ->
+            main.postDelayed({ destacar(item.area) }, i * 2500L)
+        }
+        main.postDelayed({ pararTudo() }, itens.size * 2500L)
+    }
+
+    private fun pararTudo() {
+        tts?.stop()
+        main.removeCallbacksAndMessages(null)
+        mostrandoSemVoz = false
+        removerDestaque()
     }
 
     // ---------------------------------------------------------------- leitura da tela
@@ -257,13 +326,16 @@ class NetoAccessibilityService : AccessibilityService() {
             background = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = dp(16).toFloat()
-                setColor(Color.TRANSPARENT)
-                setStroke(dp(5), Color.parseColor("#FFC107"))
+                setColor(Color.parseColor("#33FFC107")) // amarelo bem clarinho por dentro
+                setStroke(dp(6), Color.parseColor("#FFC107"))
             }
-            // Pisca suavemente para chamar atenção.
-            animate().alpha(0.3f).setDuration(500).withEndAction {
-                animate().alpha(1f).setDuration(500).start()
-            }.start()
+        }
+        // Pisca suavemente enquanto estiver na tela, para chamar atenção.
+        piscar = ObjectAnimator.ofFloat(view, View.ALPHA, 1f, 0.35f).apply {
+            duration = 600
+            repeatMode = ValueAnimator.REVERSE
+            repeatCount = ValueAnimator.INFINITE
+            start()
         }
 
         val params = WindowManager.LayoutParams(
@@ -323,6 +395,8 @@ class NetoAccessibilityService : AccessibilityService() {
     }
 
     private fun removerDestaque() {
+        piscar?.cancel()
+        piscar = null
         destaque?.let {
             try { windowManager.removeView(it) } catch (_: Exception) {}
         }
@@ -334,5 +408,6 @@ class NetoAccessibilityService : AccessibilityService() {
 
     companion object {
         private const val TAG = "NetoVirtual"
+        const val ACAO_PEDIR_AJUDA = "com.netovirtual.app.PEDIR_AJUDA"
     }
 }

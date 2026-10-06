@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tela de início: mostra se o Neto está ligado e o que dá pra fazer. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="28dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="28dp">
+
+        <!-- Cabeçalho -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/bg_bolinha"
+                android:gravity="center"
+                android:text="🙂"
+                android:textSize="30sp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/saudacao"
+                    style="@style/Texto.Titulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bom dia!" />
+
+                <TextView
+                    style="@style/Texto.Corpo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Neto Virtual" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Cartão de situação: ligado (verde) ou desligado (amarelo) -->
+        <LinearLayout
+            android:id="@+id/cartao_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/bg_cartao_ok"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/status_icone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✅"
+                    android:textSize="40sp" />
+
+                <TextView
+                    android:id="@+id/status_titulo"
+                    style="@style/Texto.Secao"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:text="Estou ligado e pronto para ajudar" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/status_texto"
+                style="@style/Texto.Corpo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Toque na bolinha verde em qualquer tela." />
+
+            <Button
+                android:id="@+id/botao_ativar"
+                style="@style/Botao.Principal"
+                android:layout_marginTop="16dp"
+                android:text="Ligar o Neto Virtual"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Como pedir ajuda -->
+        <TextView
+            style="@style/Texto.Secao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Como pedir ajuda" />
+
+        <LinearLayout
+            android:id="@+id/passos_ajuda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- Ações -->
+        <Button
+            android:id="@+id/botao_testar_voz"
+            style="@style/Botao.Principal"
+            android:layout_marginTop="32dp"
+            android:text="🔊  Ouvir minha voz" />
+
+        <Button
+            android:id="@+id/botao_ajustes"
+            style="@style/Botao.Secundario"
+            android:layout_marginTop="12dp"
+            android:text="⚙️  Ajustes" />
+
+        <Button
+            android:id="@+id/botao_rever"
+            style="@style/Botao.Secundario"
+            android:layout_marginTop="12dp"
+            android:text="📖  Ver de novo como funciona" />
+    </LinearLayout>
+</ScrollView>

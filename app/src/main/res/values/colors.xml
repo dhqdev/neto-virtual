@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Verde do Neto: calmo e com bom contraste com o branco. -->
+    <color name="verde">#2E7D32</color>
+    <color name="verde_escuro">#1B5E20</color>
+    <color name="verde_claro">#E8F5E9</color>
+    <color name="amarelo">#FFC107</color>
+    <color name="amarelo_claro">#FFF8E1</color>
+    <color name="vermelho_suave">#C62828</color>
+    <color name="fundo">#FAF7F0</color>
+    <color name="cartao">#FFFFFF</color>
+    <color name="borda">#E6E0D4</color>
+    <color name="texto">#212121</color>
+    <color name="texto_suave">#555555</color>
+</resources>

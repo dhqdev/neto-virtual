@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Apresentação em 3 páginas: boas-vindas, como funciona e ativar. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="28dp"
+            android:paddingTop="32dp"
+            android:paddingEnd="28dp"
+            android:paddingBottom="16dp">
+
+            <!-- ============ Página 1: boas-vindas ============ -->
+            <LinearLayout
+                android:id="@+id/pagina_boas_vindas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/bg_bolinha"
+                    android:elevation="8dp"
+                    android:gravity="center"
+                    android:text="🙂"
+                    android:textSize="72sp" />
+
+                <TextView
+                    style="@style/Texto.Titulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center"
+                    android:text="Olá! Eu sou o\nNeto Virtual" />
+
+                <TextView
+                    style="@style/Texto.Corpo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="Eu te ajudo a usar o celular, explicando por voz onde tocar.\n\nCom calma e sem pressa." />
+            </LinearLayout>
+
+            <!-- ============ Página 2: como funciona ============ -->
+            <LinearLayout
+                android:id="@+id/pagina_como_funciona"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/Texto.Titulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="É assim que eu ajudo" />
+
+                <TextView
+                    style="@style/Texto.Corpo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="São só três passos:" />
+
+                <LinearLayout
+                    android:id="@+id/passos_como_funciona"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <!-- Exemplo do quadrado amarelo -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_cartao"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        style="@style/Texto.Corpo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="O quadrado amarelo fica assim:" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_destaque_exemplo"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_botao_principal"
+                            android:paddingStart="28dp"
+                            android:paddingTop="12dp"
+                            android:paddingEnd="28dp"
+                            android:paddingBottom="12dp"
+                            android:text="📷  Galeria"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_cartao_ok"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="18dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🤝"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        style="@style/Texto.Corpo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:text="Eu nunca toco em nada sozinho. Quem toca é sempre você."
+                        android:textColor="@color/verde_escuro"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ============ Página 3: ativar ============ -->
+            <LinearLayout
+                android:id="@+id/pagina_ativar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/ativar_titulo"
+                    style="@style/Texto.Titulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Falta só um passo" />
+
+                <TextView
+                    android:id="@+id/ativar_texto"
+                    style="@style/Texto.Corpo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Para eu conseguir ver a tela e te ajudar, você precisa me ligar nas configurações do celular." />
+
+                <LinearLayout
+                    android:id="@+id/passos_ativar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <LinearLayout
+                    android:id="@+id/ativar_pronto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_cartao_ok"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="28dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✅"
+                        android:textSize="64sp" />
+
+                    <TextView
+                        style="@style/Texto.Secao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center"
+                        android:text="Tudo pronto!"
+                        android:textColor="@color/verde_escuro" />
+
+                    <TextView
+                        style="@style/Texto.Corpo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:text="A bolinha verde já está na sua tela. Toque nela quando precisar de ajuda." />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ============ Rodapé: pontinhos e botões ============ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="28dp"
+        android:paddingEnd="28dp"
+        android:paddingBottom="28dp">
+
+        <LinearLayout
+            android:id="@+id/pontos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" />
+
+        <Button
+            android:id="@+id/botao_principal"
+            style="@style/Botao.Principal"
+            android:text="Começar" />
+
+        <Button
+            android:id="@+id/botao_secundario"
+            style="@style/Botao.Secundario"
+            android:layout_marginTop="12dp"
+            android:text="Voltar"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

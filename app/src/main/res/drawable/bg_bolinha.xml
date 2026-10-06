@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A bolinha verde do Neto (usada nas telas e na bolinha flutuante). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <gradient android:startColor="#43A047" android:endColor="#1B5E20" android:angle="270" />
+    <stroke android:width="4dp" android:color="@android:color/white" />
+</shape>

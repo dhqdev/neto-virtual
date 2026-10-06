@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Tema.Neto" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/fundo</item>
+        <item name="android:statusBarColor">@color/fundo</item>
+        <item name="android:navigationBarColor">@color/fundo</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorPrimary">@color/verde</item>
+        <item name="android:colorAccent">@color/verde</item>
+        <item name="android:textColor">@color/texto</item>
+    </style>
+
+    <!-- Textos -->
+    <style name="Texto.Titulo">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/texto</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="Texto.Corpo">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/texto_suave</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
+    </style>
+    <style name="Texto.Secao">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/texto</item>
+    </style>
+
+    <!-- Botões grandes, fáceis de acertar com o dedo -->
+    <style name="Botao.Principal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">68dp</item>
+        <item name="android:background">@drawable/bg_botao_principal</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+    </style>
+    <style name="Botao.Secundario" parent="Botao.Principal">
+        <item name="android:background">@drawable/bg_botao_secundario</item>
+        <item name="android:textColor">@color/verde_escuro</item>
+    </style>
+</resources>

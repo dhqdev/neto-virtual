@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rostinho sorrindo, branco, para o ícone do app. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M54,30a24,24 0,1 1,0 48a24,24 0,1 1,0 -48z" />
+    <path android:fillColor="#2E7D32"
+        android:pathData="M45,47a3.5,3.5 0,1 1,0 7a3.5,3.5 0,1 1,0 -7z M63,47a3.5,3.5 0,1 1,0 7a3.5,3.5 0,1 1,0 -7z" />
+    <path android:strokeColor="#2E7D32" android:strokeWidth="4" android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M43,61 Q54,71 65,61" />
+</vector>

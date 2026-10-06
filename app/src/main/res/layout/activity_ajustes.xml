@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ajustes: velocidade da voz e tamanho da bolinha. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="28dp">
+
+        <Button
+            android:id="@+id/botao_voltar"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:background="@android:color/transparent"
+            android:minWidth="0dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="12dp"
+            android:stateListAnimator="@null"
+            android:text="←  Voltar"
+            android:textAllCaps="false"
+            android:textColor="@color/verde_escuro"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/Texto.Titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Ajustes" />
+
+        <!-- Velocidade da voz -->
+        <TextView
+            style="@style/Texto.Secao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="🗣️  Velocidade da voz" />
+
+        <LinearLayout
+            android:id="@+id/opcoes_velocidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical" />
+
+        <Button
+            android:id="@+id/botao_exemplo"
+            style="@style/Botao.Secundario"
+            android:layout_marginTop="16dp"
+            android:text="🔊  Ouvir um exemplo" />
+
+        <!-- Tamanho da bolinha -->
+        <TextView
+            style="@style/Texto.Secao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="🟢  Tamanho da bolinha" />
+
+        <LinearLayout
+            android:id="@+id/opcoes_tamanho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal" />
+
+        <!-- Privacidade -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/bg_cartao"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                style="@style/Texto.Secao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔒  Sua segurança" />
+
+            <TextView
+                style="@style/Texto.Corpo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Eu só olho a tela quando você toca na bolinha. Nunca toco em nada sozinho e não guardo o que aparece no seu celular." />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
