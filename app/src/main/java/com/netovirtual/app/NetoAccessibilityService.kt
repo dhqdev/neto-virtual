@@ -351,7 +351,9 @@ class NetoAccessibilityService : AccessibilityService() {
             }
         }
         // Pisca suavemente enquanto estiver na tela, para chamar atenção.
-        piscar = ObjectAnimator.ofFloat(view, View.ALPHA, 1f, 0.35f).apply {
+        // Se a pessoa desligou as animações do celular (comum em quem tem
+        // tontura ou vista cansada), o destaque fica parado e bem forte.
+        if (ValueAnimator.areAnimatorsEnabled()) piscar = ObjectAnimator.ofFloat(view, View.ALPHA, 1f, 0.55f).apply {
             duration = 600
             repeatMode = ValueAnimator.REVERSE
             repeatCount = ValueAnimator.INFINITE
