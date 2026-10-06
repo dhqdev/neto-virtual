@@ -13,7 +13,7 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-      - uses: android-actions/setup-android@v3
+      # O runner do GitHub já vem com o Android SDK instalado (ANDROID_HOME).
       - name: Compilar (assembleDebug)
         run: ./gradlew assembleDebug --stacktrace
       - uses: actions/upload-artifact@v4

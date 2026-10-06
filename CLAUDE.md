@@ -26,14 +26,20 @@ Ela tem o plano de etapas, a arquitetura e as regras do produto.
 
 ## Estado atual
 
-- Etapa 1 (base) escrita: bolinha flutuante, leitura da tela via
-  AccessibilityService, voz (TTS) e destaque amarelo. **Ainda não foi compilada.**
-  Primeira tarefa: gerar o Gradle wrapper, compilar e corrigir o que precisar.
+- Etapa 1 (base): bolinha flutuante, leitura da tela via AccessibilityService,
+  voz (TTS) e destaque amarelo. **Compila** (Gradle 8.7, AGP 8.5.2, Kotlin 1.9.24,
+  JDK 17); o GitHub Actions (`.github/workflows/android.yml`) gera o APK de debug
+  a cada push. **Aguardando o David testar no celular** antes da Etapa 2.
+- Destaque amarelo: a janela ignora barra de status e notch
+  (`setFitInsetsTypes(0)` + `LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS`) e, depois de
+  aparecer, mede a própria posição e corrige qualquer diferença.
+- `local.properties` é de cada máquina (fica fora do git): `sdk.dir=<caminho do SDK>`.
+- A skill `neto-virtual` ainda não está no repositório
+  (`.claude/skills/neto-virtual/SKILL.md` não existe).
 
 ## Comandos
 
 ```bash
-gradle wrapper --gradle-version 8.7   # só na primeira vez, se não houver ./gradlew
 ./gradlew assembleDebug               # compila
 ./gradlew installDebug                # instala no celular conectado (adb)
 adb logcat -s NetoVirtual             # logs do app
