@@ -11,6 +11,8 @@
     </style>
 
     <!-- Textos -->
+    <style name="Texto" />
+    <style name="Botao" />
     <style name="Texto.Titulo">
         <item name="android:textSize">30sp</item>
         <item name="android:textStyle">bold</item>
